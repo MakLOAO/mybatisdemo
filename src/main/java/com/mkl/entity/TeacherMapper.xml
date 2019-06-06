@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mkl.entity.TeacherMapper">
+    <!-- 这是一对多的查询嵌套处理
+    <select id="getTeachers" resultType="Teacher" >
+        SELECT * FROM teacher WHERE id = #{id}
+    </select>
+    -->
+
+    <!-- 一对多按结果嵌套处理 -->
+
+    <select id="getTeacher" resultMap="TeacherStudent">
+        SELECT s.id sid, s.name sname, s.tid stid, t.id tid, t.name tname FROM student s, teacher t WHERE s.tid = t.id AND t.id = #{id}
+    </select>
+
+    <resultMap id="TeacherStudent" type="Teacher" >
+        <id column="tid" property="id" />
+        <result column="tname" property="name" />
+        <collection property="studentList" ofType="Student">
+            <id column="sid" property="id" />
+            <result column="sname" property="name" />
+        </collection>
+    </resultMap>
+
+    <!-- 多对一按结果嵌套处理 -->
+    <!--
+    先找出Teacher表，然后根据Teacher表的id作为参数传入到select子标签去查Student表
+    根据select标签的SQL语句，Student表找出tid为id的Student，并构造出Student对象作为studentList的一份子
+     -->
+    <select id="getTeacher2" resultMap="TeacherStudent2" >
+        SELECT * FROM teacher WHERE id = #{id}
+    </select>
+
+    <resultMap id="TeacherStudent2" type="Teacher">
+        <collection property="studentList" javaType="ArrayList" ofType="Student" column="id" select="com.mkl.entity.StudentMapper.getStudents3" />
+    </resultMap>
+</mapper>

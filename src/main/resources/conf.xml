@@ -6,6 +6,8 @@
     <properties resource="db.properties" />
     <typeAliases>
         <typeAlias type="com.mkl.entity.Person" alias="Person" />
+        <typeAlias type="com.mkl.entity.Student" alias="Student" />
+        <typeAlias type="com.mkl.entity.Teacher" alias="Teacher" />
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -23,5 +25,7 @@
     <mappers>
         <mapper resource="com/mkl/entity/personMapper.xml" />
         <mapper class="com.mkl.dao.PersonDaoI" />
+        <mapper resource="com/mkl/entity/StudentMapper.xml" />
+        <mapper resource="com/mkl/entity/TeacherMapper.xml" />
     </mappers>
 </configuration>
