@@ -1,7 +1,10 @@
 package com.mkl.test.mybatis;
 
+import com.mkl.dao.PersonDao;
+import com.mkl.dao.PersonDaoI;
 import com.mkl.entity.Person;
 import com.mkl.test.base.UnitTestBase;
+import com.mkl.util.MyBatisUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,38 +27,21 @@ public class TestMybatis extends UnitTestBase {
  * @create: 2019-05-29 09:14
  **/
 
-    private void addPerson(SqlSession session, int id, String name, int age) {
-        Person person = new Person(id, name, age);
-        String statement = "com.mkl.entity.personMapper.addPerson";
-        session.insert(statement, person);
-        session.commit();
-    }
-
-    private Person queryPerson(SqlSession session, int id) {
-        String statement = "com.mkl.entity.personMapper.queryPersonById";
-        Person person = session.selectOne(statement, id);
-        return person;
-    }
-
-    private List<Person> queryPersonsAll(SqlSession session) {
-        String statement = "com.mkl.entity.personMapper.queryPersonByIdAll";
-        List<Person> persons = session.selectList(statement);
-        return persons;
-    }
-
     @Test
     public void testMybatis() throws IOException {
-        Reader reader = Resources.getResourceAsReader("conf.xml");
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        SqlSession session = sessionFactory.openSession();
-//        Person person = queryPerson(session, 1);
+        SqlSession session = MyBatisUtil.getSqlSession();
+        PersonDaoI personDaoI = session.getMapper(PersonDaoI.class);
+        List<Person> list = personDaoI.getList();
+        for (Person person : list)
+            System.out.println(person);
+//        Person person = personDao.queryPerson(1);
 //        System.out.println(person);
 //        addPerson(session, 2, "ls", 21);
 //        Person person2 = queryPerson(session, 2);
 //        System.out.println(person2);
-        List<Person> list = queryPersonsAll(session);
-        for(Person p : list)
-            System.out.println(p);
-        session.close();
+//        List<Person> list = queryPersonsAll(session);
+//        for(Person p : list)
+//            System.out.println(p);
+//        session.close();
     }
 }

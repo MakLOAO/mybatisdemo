@@ -2,15 +2,15 @@ package com.mkl.entity;
 
 public class Person {
     private int id;
-    private String name;
+    private String name1;
     private int age;
 
     public Person() {
     }
 
-    public Person(int id, String name, int age) {
+    public Person(int id, String name1, int age) {
         this.id = id;
-        this.name = name;
+        this.name1 = name1;
         this.age = age;
     }
 
@@ -22,12 +22,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getName1() {
+        return name1;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName1(String name1) {
+        this.name1 = name1;
     }
 
     public int getAge() {
@@ -40,6 +40,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return this.id + "," + this.name + "," + this.age;
+        return this.id + "," + this.name1 + "," + this.age;
     }
 }

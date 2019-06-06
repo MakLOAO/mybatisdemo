@@ -3,9 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mkl.entity.personMapper">
-    <select id="queryPersonById" resultType="com.mkl.entity.Person" parameterType="int">
-        SELECT * FROM person WHERE id = #{id}
+
+    <select id="queryPageMap" parameterType="Map" resultMap="PersonMap">
+        SELECT * FROM person LIMIT #{startIndex}, #{pageSize}
     </select>
+
+    <select id="queryPageRowBounds" resultMap="PersonMap">
+        SELECT * FROM person
+    </select>
+
+    <!-- 为name设置别名name1，name1和实体类的属性名一致，name为数据库的列名 -->
+    <select id="queryPersonById" resultType="Person">
+        SELECT id, name name1, age FROM person WHERE id = #{id}
+    </select>
+
+    <select id="queryPersonById1" resultMap="PersonMap">
+        SELECT id, name, age FROM person WHERE id = #{id}
+    </select>
+    
+    <resultMap id="PersonMap" type="Person" >
+        <result column="id" property="id" />
+        <result column="name" property="name1" />
+        <result column="age" property="age" />
+    </resultMap>
 
     <insert id="addPerson" parameterType="com.mkl.entity.Person" >
         INSERT INTO person(id, name, age) VALUES (#{id}, #{name}, #{age})
@@ -13,6 +33,10 @@
 
     <select id="queryPersonByIdAll" resultType="com.mkl.entity.Person">
         SELECT * FROM person
+    </select>
+
+    <select id="queryPersonByIdAndName" parameterType="Person" resultType="com.mkl.entity.Person">
+        SELECT * FROM person WHERE id = #{id} AND name = #{name}
     </select>
 
 </mapper>
